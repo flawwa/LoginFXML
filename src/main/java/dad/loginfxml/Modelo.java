@@ -1,52 +1,50 @@
 package dad.loginfxml;
 
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVParser;
-import org.apache.commons.csv.CSVRecord;
-
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.nio.file.Paths;
-import java.util.Objects;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 public class Modelo {
-	
-    private String nombre;
-    private String password;
-    private final String csvFilePath = Paths.get("src/main/resources/users.csv").toString();
 
-    public String getNombre() { return nombre; };
-    public String getPassword() { return password; };
+	private StringProperty nombre = new SimpleStringProperty();
+	private StringProperty password = new SimpleStringProperty();
+	private BooleanProperty ldap = new SimpleBooleanProperty();
 
-    public void setNombre(String Nombre) {
-        this.nombre = Nombre;
-    };
+	public final StringProperty nombreProperty() {
+		return this.nombre;
+	}
 
-    public void setPassword(String Password) {
-        this.password = Password;
-    }
+	public final String getNombre() {
+		return this.nombreProperty().get();
+	}
 
-    public boolean login() throws FileNotFoundException {
-        // ir a leer al csv
-        boolean found = false;
-        try {
-            CSVParser parser = CSVFormat.DEFAULT.parse(new FileReader(csvFilePath));
+	public final void setNombre(final String nombre) {
+		this.nombreProperty().set(nombre);
+	}
 
-            for(CSVRecord record : parser) {
-                String storedNombre = record.get(0);
-                String storedPassword = record.get(1);
-                if(Objects.equals(storedNombre, nombre) && Objects.equals(storedPassword, password)) {
-                    found = true;
-                    break;
-                }
-            }
+	public final StringProperty passwordProperty() {
+		return this.password;
+	}
 
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+	public final String getPassword() {
+		return this.passwordProperty().get();
+	}
 
-        return found;
-    }
+	public final void setPassword(final String password) {
+		this.passwordProperty().set(password);
+	}
+
+	public final BooleanProperty ldapProperty() {
+		return this.ldap;
+	}
+
+	public final boolean isLdap() {
+		return this.ldapProperty().get();
+	}
+
+	public final void setLdap(final boolean ldap) {
+		this.ldapProperty().set(ldap);
+	}
+
 }
-
